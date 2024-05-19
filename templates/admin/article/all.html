@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>All Articles</h2>
+
+{% if articles %}
+    {% for article in articles %}
+        <p><a href="{{ url_for('edit_article', article_id=article.id) }}">{{ article.title }}</a></p>
+    {% endfor %}
+{% else %}
+    <p>No articles yet.</p>
+{% endif %}
+{% endblock %}

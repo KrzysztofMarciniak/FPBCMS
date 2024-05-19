@@ -21,7 +21,7 @@ class MySQLModel:
             return False, str(err)
         finally:
             self.disconnect()
-            
+
     def connect(self):
         try:
             self.connection = mysql.connector.connect(
@@ -41,7 +41,111 @@ class MySQLModel:
         if self.connection:
             self.connection.close()
             self.connection = None
-
+    def add_article(self, title, content):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "INSERT INTO articles (title, content) VALUES (%s, %s)"
+            self.cursor.execute(query, (title, content))
+            self.connection.commit()
+            return True, "Article added"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def edit_article(self, article_id, title, content):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "UPDATE articles SET title = %s, content = %s WHERE id = %s"
+            self.cursor.execute(query, (title, content, article_id))
+            self.connection.commit()
+            return True, "Article edited"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def remove_article(self, article_id):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "DELETE FROM articles WHERE id = %s"
+            self.cursor.execute(query, (article_id,))
+            self.connection.commit()
+            return True, "Article removed"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def add_user(self, username, password):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "INSERT INTO users (username, password) VALUES (%s, %s)"
+            self.cursor.execute(query, (username, password))
+            self.connection.commit()
+            return True, "User added"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def edit_user(self, user_id, username, password):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "UPDATE users SET username = %s, password = %s WHERE id = %s"
+            self.cursor.execute(query, (username, password, user_id))
+            self.connection.commit()
+            return True, "User edited"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def remove_user(self, user_id):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "DELETE FROM users WHERE id = %s"
+            self.cursor.execute(query, (user_id,))
+            self.connection.commit()
+            return True, "User removed"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
+    def show_articles(self):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        
+        try:
+            query = "SELECT * FROM articles"
+            self.cursor.execute(query)
+            articles = self.cursor.fetchall()
+            return True, articles
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+            
     def check_database_connection(self):
         success, message = self.connect()
         if success:
