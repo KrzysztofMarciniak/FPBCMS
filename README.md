@@ -2,4 +2,4 @@
 Flask Powered Basic Content Manager System
 
 ```console
-docker-compose up --build
+flask run --debug --debugger

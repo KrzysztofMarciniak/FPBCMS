@@ -1,3 +1,7 @@
 <header>
     <h1>My Website</h1>
+    {% if 'username' in session %}
+        <p>Welcome, {{ session['username'] }}!</p>
+    {% endif %}
 </header>
+    
