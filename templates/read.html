@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2>Read</h2>
+
+{% if content %}
+    <ul>
+    {% for article in content %}
+        <li>
+            <strong>Title:</strong> {{ article[2] }} <br>
+            <strong>Date:</strong> {{ article[1].strftime('%Y-%m-%d %H:%M:%S') }} <br>
+            <strong>Content:</strong>{{ article[3] }} <br>
+            {% if 'admin' in session and session['admin'] == True %}
+                <a href="{{ url_for('edit_article', article_id=article[0]) }}">Edit</a>
+                <a href="{{ url_for('delete_article', article_id=article[0]) }}">Delete</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No articles yet.</p>
+{% endif %}
+
+{% endblock %}
+

@@ -16,19 +16,14 @@ class RegisterManager:
             secret_password = "pass"
             if secret_password == request_secret_password:
                 self.mysql_model.connect()
-                
-                try:
-                    cursor = self.mysql_model.connection.cursor()
-                    cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
-                    self.mysql_model.connection.commit()
-                except mysql.connector.Error as err:
-                    print(f"Error: {err}")
-                    raise err
-                finally:
-                    cursor.close()
-                    self.mysql_model.disconnect()
-                return redirect(url_for('login'))
+                success, message = self.mysql_model.insert_user(username, password)
+                if success:
+                    return redirect(url_for('login.login'))
+                else:
+                    return message
             else:
                 return "Wrong secret password"
-                
+        else:
+            return self.show_form()
+        
 

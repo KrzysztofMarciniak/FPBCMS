@@ -1,14 +1,28 @@
 import mysql.connector
+from mysql.connector import Error
 
 class MySQLModel:
     def __init__(self):
         self.connection = None
         self.cursor = None
+    def insert_user(self, username, password):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            query = "INSERT INTO users (username, password) VALUES (%s, %s)"
+            self.cursor.execute(query, (username, password))
+            self.connection.commit()
+            return True, "User added"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+
     def authenticate_user(self, username, password):
         success, message = self.connect()
         if not success:
             return False, message
-        
         try:
             query = "SELECT * FROM users WHERE username = %s AND password = %s"
             self.cursor.execute(query, (username, password))
@@ -45,7 +59,6 @@ class MySQLModel:
         success, message = self.connect()
         if not success:
             return False, message
-        
         try:
             query = "INSERT INTO articles (title, content) VALUES (%s, %s)"
             self.cursor.execute(query, (title, content))
@@ -100,7 +113,19 @@ class MySQLModel:
             return False, str(err)
         finally:
             self.disconnect()
-            
+    def show_article(self, article_id):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            query = "SELECT * FROM articles WHERE id = %s"
+            self.cursor.execute(query, (article_id,))
+            article = self.cursor.fetchone()
+            return True, article
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
     def edit_user(self, user_id, username, password):
         success, message = self.connect()
         if not success:
@@ -131,16 +156,42 @@ class MySQLModel:
         finally:
             self.disconnect()
             
-    def show_articles(self):
+    def get_titles_and_dates(self):
         success, message = self.connect()
         if not success:
             return False, message
-        
         try:
-            query = "SELECT * FROM articles"
+            query = "SELECT id, date, title FROM articles"
             self.cursor.execute(query)
-            articles = self.cursor.fetchall()
-            return True, articles
+            titles_and_dates = self.cursor.fetchall()
+            return True, titles_and_dates
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+    def get_id_from_title(self, article_title):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            query = "SELECT id FROM articles WHERE title = %s"
+            self.cursor.execute(query, (article_title,))
+            article_id = self.cursor.fetchone()
+            return True, article_id
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
+    def get_content(self, article_title):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            #FIX THIS 
+            query = "SELECT date, title, content FROM articles WHERE id = %s"
+            self.cursor.execute(query, (article_title,))
+            article = self.cursor.fetchone()
+            return True, article
         except mysql.connector.Error as err:
             return False, str(err)
         finally:

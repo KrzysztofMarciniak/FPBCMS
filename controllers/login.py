@@ -15,7 +15,7 @@ class LoginManager:
             if success:
                 session['username'] = username
                 session['admin'] = True
-                return redirect(url_for('index'))
+                return redirect(url_for('index.index'))
             else:
                 return message
         else:

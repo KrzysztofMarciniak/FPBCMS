@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>All Articles</h2>
+    {% for articles in content %}
+        <li>
+            <strong>Title:</strong> <a href="{{ url_for('articles.read', article_title=articles[2]) }}">{{ articles[2] }}</a> <br>
+            <strong>Date:</strong> {{ articles[1].strftime('%Y-%m-%d %H:%M:%S') }} <br>
+        </li>
+    {% endfor %}
+{% endblock %}

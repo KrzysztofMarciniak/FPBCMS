@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Read</h2>
+    {% for article in content %}
+        <li>
+            <strong>Date:</strong> <p>{{ article[0].strftime('%Y-%m-%d %H:%M:%S') }} </p><br>
+            <strong>Title:</strong><p> {{ article[1] }}</p> <br>
+            <strong>Content:</strong><p> {{ article[2]}}</p><br>
+        </li>
+    {% endfor %}
+{% endblock %}
