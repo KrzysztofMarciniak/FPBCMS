@@ -103,7 +103,6 @@ class MySQLModel:
         success, message = self.connect()
         if not success:
             return False, message
-        
         try:
             query = "INSERT INTO users (username, password) VALUES (%s, %s)"
             self.cursor.execute(query, (username, password))
@@ -126,36 +125,6 @@ class MySQLModel:
             return False, str(err)
         finally:
             self.disconnect()
-    def edit_user(self, user_id, username, password):
-        success, message = self.connect()
-        if not success:
-            return False, message
-        
-        try:
-            query = "UPDATE users SET username = %s, password = %s WHERE id = %s"
-            self.cursor.execute(query, (username, password, user_id))
-            self.connection.commit()
-            return True, "User edited"
-        except mysql.connector.Error as err:
-            return False, str(err)
-        finally:
-            self.disconnect()
-            
-    def remove_user(self, user_id):
-        success, message = self.connect()
-        if not success:
-            return False, message
-        
-        try:
-            query = "DELETE FROM users WHERE id = %s"
-            self.cursor.execute(query, (user_id,))
-            self.connection.commit()
-            return True, "User removed"
-        except mysql.connector.Error as err:
-            return False, str(err)
-        finally:
-            self.disconnect()
-            
     def get_titles_and_dates(self):
         success, message = self.connect()
         if not success:
@@ -195,25 +164,38 @@ class MySQLModel:
             return False, str(err)
         finally:
             self.disconnect()
-    def edit_article(self, article_id, title, content):
+    def edit_article(self, article_title, article_content):
         success, message = self.connect()
         if not success:
             return False, message
         try:
-            query = "UPDATE articles SET title = %s, content = %s WHERE id = %s"
-            self.cursor.execute(query, (title, content, article_id))
+            query = "UPDATE articles SET content = %s WHERE title = %s"
+            self.cursor.execute(query, (article_content, article_title))
             self.connection.commit()
             return True, "Article edited"
         except mysql.connector.Error as err:
             return False, str(err)
         finally:
             self.disconnect()
+
     def check_database_connection(self):
         success, message = self.connect()
         if success:
             self.disconnect()
         return success, message
-
+    def delete_article(self, article_title):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            query = "DELETE FROM articles WHERE title = %s"
+            self.cursor.execute(query, (article_title,))
+            self.connection.commit()
+            return True, "Article deleted"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
     def ensure_tables_exist(self):
         success, message = self.connect()
         if not success:

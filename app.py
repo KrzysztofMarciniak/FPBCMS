@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from controllers.register import RegisterManager
 
 from model import MySQLModel
 
@@ -16,15 +15,6 @@ app.register_blueprint(about_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 app.register_blueprint(articles_bp, url_prefix='/articles')
-
-
-@app.route('/admin')
-def admin():
-    if 'admin' in session and session['admin'] == True:
-        return render_template('admin/admin.html')
-    else:
-        return redirect(url_for('login.login'))
-
 @app.route('/checkdb')
 def check_db():
     mysql_model = MySQLModel()

@@ -2,14 +2,14 @@
     <ul>
         <li><a href="{{ url_for('index.index') }}">Home</a></li>
         <li><a href="{{ url_for('login.login') }}">Login</a></li>
-        <li><a href="{{ url_for('register.register') }}">Register</a></li>
         <li><a href="{{ url_for('about.about') }}">About</a></li>
-        <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
         <li><a href="{{ url_for('check_db') }}">Check DB</a></li>
     </ul>
     {% if 'admin' in session and session['admin'] == True %}
-    <ul>Admin Panel
-        <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <ul>Admin Panel:
+        <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
+        <li> <a href="{{ url_for('articles.new') }}">New Article</a></li>
+        <li><a href="{{ url_for('register.register') }}">Register</a></li>
     </ul>
     {% endif %}
 </nav>
