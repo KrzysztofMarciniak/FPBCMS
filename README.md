@@ -6,7 +6,7 @@ flask run --debug --debugger
 
 ## Flask Powered Basic Content Manager System
 
-FPBCMS is a simple content management system built with Flask. It allows users to perform CRUD (Create, Read, Update, Delete) operations on articles. Additionally, users can be added and logged in to manage the articles. The system is designed to be straightforward and easy to use.
+FPBCMS is a simple content management system built with Flask. It allows users to perform CRUD (Create, Read, Update, Delete) operations on articles. Additionally, users can be added and logged in to manage the articles. The system was designed to be straightforward and easy to use.
 
 ### Features
 * Article Management: Create, read, update, and delete articles.
