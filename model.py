@@ -187,16 +187,27 @@ class MySQLModel:
         if not success:
             return False, message
         try:
-            #FIX THIS 
-            query = "SELECT date, title, content FROM articles WHERE id = %s"
+            query = "SELECT content, title, date FROM articles WHERE title = %s"
             self.cursor.execute(query, (article_title,))
-            article = self.cursor.fetchone()
-            return True, article
+            article_content = self.cursor.fetchone()
+            return True, article_content
         except mysql.connector.Error as err:
             return False, str(err)
         finally:
             self.disconnect()
-            
+    def edit_article(self, article_id, title, content):
+        success, message = self.connect()
+        if not success:
+            return False, message
+        try:
+            query = "UPDATE articles SET title = %s, content = %s WHERE id = %s"
+            self.cursor.execute(query, (title, content, article_id))
+            self.connection.commit()
+            return True, "Article edited"
+        except mysql.connector.Error as err:
+            return False, str(err)
+        finally:
+            self.disconnect()
     def check_database_connection(self):
         success, message = self.connect()
         if success:
