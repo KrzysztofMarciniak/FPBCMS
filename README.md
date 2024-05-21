@@ -15,7 +15,7 @@ FPBCMS is a simple content management system built with Flask. It allows users t
 #### Installation
 * Clone the repository:
  ```console
-git clone https://github.com/yourusername/FPBCMS.git
+git clone https://github.com/KrzysztofMarciniak/FPBCMS.git
 cd FPBCMS
 ```
 * Create a virtual environment:
